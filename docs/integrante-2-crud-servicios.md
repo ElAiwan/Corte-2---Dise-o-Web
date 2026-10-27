@@ -60,12 +60,14 @@ sin commit, push ni PR; los mensajes sugeridos están al final de este documento
 
 ## Levantar para pruebas manuales
 
+Guía para cada computadora y sus credenciales: [PostgreSQL local](postgresql-local.md).
+
 1. Configurar `backend/.env` a partir de `.env.example` con las credenciales locales.
 2. Tener PostgreSQL disponible en `localhost:5432`. En pgAdmin crear la base `prestamos_db`
    con propietario `postgres` si aún no existe. Spring crea las tablas y carga los datos al arrancar.
    Como alternativa manual, abrir Query Tool sobre esa base y ejecutar `database/script.sql`.
    pgAdmin es la herramienta de administración; el backend se conecta directamente al servidor PostgreSQL.
-   Si se usa Docker en lugar de la instalación local, ejecutar `docker compose up -d` desde `backend`.
+   Para esta etapa se usa PostgreSQL instalado localmente en cada computadora.
 3. Mientras no esté integrada la configuración de seguridad del integrante 3, ejecutar desde `backend`:
 
 ```powershell
