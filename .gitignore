@@ -1,0 +1,23 @@
+# Secretos
+.env
+**/.env
+!**/.env.example
+
+# Backend (Maven / IDE)
+backend/target/
+*.class
+*.log
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Sistema
+.DS_Store
+Thumbs.db
