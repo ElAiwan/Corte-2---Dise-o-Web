@@ -1,15 +1,16 @@
-# Alternativa para quien no tenga MySQL instalado: docker compose up -d (desde backend/)
+# Alternativa para quien no tenga PostgreSQL instalado: docker compose up -d (desde backend/)
 # Toma DB_PASSWORD del mismo archivo .env que usa Spring Boot.
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: prestamos-mysql
+  postgres:
+    image: postgres:16
+    container_name: prestamos-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: prestamos_db
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: prestamos_db
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - prestamos_data:/var/lib/mysql
+      - prestamos_postgres_data:/var/lib/postgresql/data
 volumes:
-  prestamos_data:
+  prestamos_postgres_data:
