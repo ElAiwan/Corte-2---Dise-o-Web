@@ -8,6 +8,7 @@ import com.uam.prestamos.model.Prestamo;
 import com.uam.prestamos.model.TipoEquipo;
 import com.uam.prestamos.repository.EquipoRepository;
 import com.uam.prestamos.repository.PrestamoRepository;
+import com.uam.prestamos.security.JwtAuthenticationFilter;
 import com.uam.prestamos.service.EquipoService;
 import com.uam.prestamos.service.PrestamoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -42,7 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /** HTTP y servicios reales; solo la persistencia está sustituida con Mockito. */
-@WebMvcTest({EquipoController.class, PrestamoController.class})
+/* La seguridad se prueba aparte: aquí se excluye el filtro JWT para probar solo HTTP + servicios. */
+@WebMvcTest(controllers = {EquipoController.class, PrestamoController.class},
+        excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class))
 @AutoConfigureMockMvc(addFilters = false)
 @Import({EquipoService.class, PrestamoService.class, GlobalExceptionHandler.class})
 class CrudApiTest {
