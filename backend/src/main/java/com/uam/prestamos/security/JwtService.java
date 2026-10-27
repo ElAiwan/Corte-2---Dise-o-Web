@@ -41,7 +41,7 @@ public class JwtService {
                 .claim("rol", rol)
                 .issuedAt(ahora)
                 .expiration(new Date(ahora.getTime() + expiracionMs))
-                .signWith(clave)
+                .signWith(clave, Jwts.SIG.HS256)
                 .compact();
     }
 

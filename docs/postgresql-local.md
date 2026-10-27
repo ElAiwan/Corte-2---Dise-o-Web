@@ -77,17 +77,19 @@ de su configuración de ejecución para que no sustituyan los valores locales de
 
 ## 4. Arrancar el backend
 
-Desde la carpeta `backend`, mientras esté pendiente la seguridad del integrante 3:
-
-```powershell
-.\mvnw.cmd spring-boot:run '-Dspring-boot.run.arguments=--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration'
-```
-
-Este parámetro sirve para probar el CRUD en la etapa actual. Cuando se integre la seguridad JWT,
-ejecutar el comando normal y usar los tokens correspondientes:
+Desde la carpeta `backend`, con PostgreSQL local iniciado y `.env` configurado:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
+```
+
+La seguridad JWT ya está integrada. Iniciar sesión para obtener el token:
+
+```http
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{"username":"admin","password":"Admin123*"}
 ```
 
 Si Java no se detecta, definir `JAVA_HOME` con la ruta real del JDK 17 de esa computadora
@@ -100,8 +102,10 @@ $env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
 ## 5. Comprobar
 
 La consola debe mostrar `Started PrestamosApplication` y el servidor en el puerto `8080`.
-En Postman, consultar `GET http://localhost:8080/api/equipos`: con la semilla inicial devuelve seis equipos.
-Cuando esté integrado JWT, incluir `Authorization: Bearer <token>`.
+En Postman, consultar `GET http://localhost:8080/api/equipos` con `Authorization: Bearer <token>`:
+con la semilla inicial devuelve seis equipos. Las contraseñas de las cuentas de prueba se
+configuran en `ADMIN_PASSWORD` y `USER_PASSWORD` antes del primer arranque; el inicializador
+crea esas cuentas si no existen y no cambia las contraseñas de cuentas ya creadas.
 En pgAdmin, actualizar `prestamos_db > Schemas > public > Tables` para ver
 `equipos`, `prestamos` y `usuarios`.
 
@@ -118,7 +122,7 @@ Cada computadora tendrá sus propios datos locales.
 | La base no existe | Crear `prestamos_db` en pgAdmin; el backend crea tablas, no la base. |
 | Permisos insuficientes | El usuario debe poder crear y modificar tablas y secuencias de su base. |
 | Puerto 8080 ocupado | Detener la otra instancia del backend antes de arrancar. |
-| Respuesta 401 | Revisar el comando de esta etapa o enviar token si ya se integró JWT. |
+| Respuesta 401 | Iniciar sesión y enviar el token JWT en el header Authorization. |
 
 El script `database/script.sql` es una alternativa manual para crear tablas y semillas dentro
 de `prestamos_db`; no es necesario ejecutarlo si Spring Boot ya inició correctamente.

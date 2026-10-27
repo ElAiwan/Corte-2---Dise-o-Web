@@ -2,7 +2,7 @@
 
 Rama: `feature/2-crud-servicios`. Java 17, Spring Boot 3.3.5, sin Lombok.
 Se usan las entidades y los métodos de repositorio del integrante 1, sin modificarlos.
-La seguridad y el login se integran con el trabajo del integrante 3.
+La seguridad y el login del integrante 3 ya están integrados.
 Por indicación del usuario se cambió la base de datos del contrato original a PostgreSQL,
 administrada con pgAdmin. Este cambio también adapta el driver Maven, properties, SQL,
 ejemplo de entorno y alternativa Docker del integrante 1; debe comunicarse al equipo.
@@ -43,7 +43,7 @@ $env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
 
 Estas pruebas no necesitan PostgreSQL ni credenciales. Usan persistencia simulada y no verifican el SQL,
 la eliminación en cascada real, el rollback real de JPA ni las autorizaciones JWT.
-La prueba completa con PostgreSQL y seguridad debe repetirse durante la integración del equipo.
+La colección Postman permite comprobar PostgreSQL y seguridad juntos durante la integración.
 
 Resultado verificado el 26/10/2026 con Java 17: **28 pruebas, 0 fallos, 0 errores, 0 omitidas; BUILD SUCCESS**.
 Después del cambio a PostgreSQL 16 se repitieron satisfactoriamente las 28 pruebas y los
@@ -52,11 +52,9 @@ en cascada del préstamo devuelto. Se comprobó el arranque con creación de tab
 y carga de los seis equipos y el préstamo semilla. También se ejecutó dos veces el script manual:
 no duplicó datos y conservó las secuencias después de eliminar los registros de prueba.
 La base local `prestamos_db` quedó creada con propietario `postgres`.
-Para la prueba HTTP se utilizó temporalmente el puerto 18080 y la exclusión de seguridad
-indicada en la guía; el puerto configurado del proyecto sigue siendo 8080. La prueba con JWT
-queda para cuando se integre la parte del integrante 3.
-Los cambios se dejan locales,
-sin commit, push ni PR; los mensajes sugeridos están al final de este documento.
+Para esa primera prueba HTTP se utilizó temporalmente el puerto 18080 y la exclusión de seguridad
+indicada en la guía; el puerto configurado del proyecto sigue siendo 8080.
+La versión integrada incorpora JWT, React y la colección Postman de los otros integrantes.
 
 ## Levantar para pruebas manuales
 
@@ -68,13 +66,13 @@ Guía para cada computadora y sus credenciales: [PostgreSQL local](postgresql-lo
    Como alternativa manual, abrir Query Tool sobre esa base y ejecutar `database/script.sql`.
    pgAdmin es la herramienta de administración; el backend se conecta directamente al servidor PostgreSQL.
    Para esta etapa se usa PostgreSQL instalado localmente en cada computadora.
-3. Mientras no esté integrada la configuración de seguridad del integrante 3, ejecutar desde `backend`:
+3. Ejecutar desde `backend` con la seguridad JWT integrada:
 
 ```powershell
-.\mvnw.cmd spring-boot:run '-Dspring-boot.run.arguments=--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration'
+.\mvnw.cmd spring-boot:run
 ```
 
-Cuando se integre seguridad, ejecutar `.\mvnw.cmd spring-boot:run` y enviar
+Iniciar sesión en `/api/auth/login` y enviar
 `Authorization: Bearer <token-admin>` en las escrituras; USER y ADMIN pueden consultar.
 
 ## Peticiones para Postman
